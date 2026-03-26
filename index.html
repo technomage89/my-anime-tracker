@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Anime List</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: sans-serif; background: #1a1a1a; color: white; padding: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+        .card {
+    background: rgba(255, 255, 255, 0.05); /* See-through dark grey */
+    backdrop-filter: blur(10px);          /* Blurs the background */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.2s;           /* Makes it "pop" on hover */
+}
+
+        .card:hover {
+    transform: translateY(-5px);          /* Lifts the card up */
+}
+        .card img { max-width: 100%; border-radius: 4px; height: 280px; object-fit: cover; }
+        h1 { border-bottom: 2px solid #3eaf7c; padding-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+    <h1>📺 My Anime Collection</h1>
+    <div id="anime-grid" class="grid">Loading your list...</div>
+
+    <script>
+        // 1. Setup Connection (Use your URL and the PUBLIC 'anon' key here)
+        const _supabase = supabase.createClient('https://lbnkiixympbtjkgyrygr.supabase.co', 'sb_publishable_gpco_Svssi5SOGxAnimdsg_B3h7Sfv6');
+
+        async function loadAnime() {
+            const { data, error } = await _supabase
+                .from('anime')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                console.error(error);
+                return;
+            }
+
+            const container = document.getElementById('anime-grid');
+            container.innerHTML = data.map(item => `
+                <div class="card">
+                    <img src="${item.cover_image_url || 'https://via.placeholder.com/200x280'}" alt="${item.title}">
+                    <h3>${item.title}</h3>
+                    <p style="color: #aaa;">${item.status}</p>
+                </div>
+            `).join('');
+        }
+
+        loadAnime();
+    </script>
+</body>
+</html>

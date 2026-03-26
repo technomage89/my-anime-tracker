@@ -1,0 +1,6 @@
+{
+  "deno.enable": true,
+  "deno.enablePaths": ["functions/add-anime"],
+  "deno.importMap": "functions/import_map.json",
+  "deno.lint": true
+}

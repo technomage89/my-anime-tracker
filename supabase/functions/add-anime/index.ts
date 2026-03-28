@@ -29,13 +29,16 @@ serve(async (req) => {
       status: 200
     })
   } catch (err) {
-  const error = err as Error; // This "casts" it so TypeScript is happy
-  return new Response(JSON.stringify({ error: error.message }), {
+  // This tells TypeScript: "Treat 'err' as a standard Error object"
+  const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+  
+  return new Response(JSON.stringify({ error: errorMessage }), {
     headers: { ...corsHeaders, "Content-Type": "application/json" },
     status: 400
   })
 }
 }
+
   try {
     // 1. Get the search term from your Test tab or Curl
     const { searchTerm } = await req.json()

@@ -18,15 +18,24 @@ serve(async (req) => {
   )
   // NEW: Check if the user wants to DELETE
   if (req.method === 'DELETE') {
+  try {
     const { id } = await req.json()
     const { error } = await supabase.from('anime').delete().eq('id', id)
     
     if (error) throw error
+
     return new Response(JSON.stringify({ message: "Deleted!" }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      headers: { ...corsHeaders, "Content-Type": "application/json" }, // <--- MUST HAVE THIS
       status: 200
     })
-  }
+  } catch (err) {
+  const error = err as Error; // This "casts" it so TypeScript is happy
+  return new Response(JSON.stringify({ error: error.message }), {
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+    status: 400
+  })
+}
+}
   try {
     // 1. Get the search term from your Test tab or Curl
     const { searchTerm } = await req.json()

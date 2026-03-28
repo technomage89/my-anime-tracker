@@ -5,59 +5,87 @@
     <title>My Anime List</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        body { font-family: sans-serif; background: #1a1a1a; color: white; padding: 20px; }
-        <div class="controls">
-    <input type="text" id="anime-search" placeholder="Search anime (e.g. Naruto)...">
-    <select id="status-select">
-        <option value="Plan to Watch">Plan to Watch</option>
-        <option value="Watching">Watching</option>
-        <option value="Watched">Completed</option>
-        <option value="Unfinished">On Hold/Unfinished</option>
-    </select>
-    <button onclick="addAnime()">Add to List</button>
-        </div>
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+        body { 
+        font-family: sans-serif; 
+        background: #1a1a1a; 
+        color: white; 
+        padding: 20px; 
+        }
+        
+        .grid { 
+        display: grid; 
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+        gap: 20px; 
+        width: 100%;
+        }
+        
         .card {
-    background: rgba(255, 255, 255, 0.05); /* See-through dark grey */
-    backdrop-filter: blur(10px);          /* Blurs the background */
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: transform 0.2s;           /* Makes it "pop" on hover */
-}
+        background: rgba(255, 255, 255, 0.05); /* See-through dark grey */
+        backdrop-filter: blur(10px);          /* Blurs the background */
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: transform 0.2s;           /* Makes it "pop" on hover */
+        }
 
         .card:hover {
-    transform: translateY(-5px);          /* Lifts the card up */
-}
-        .card img { max-width: 100%; border-radius: 4px; height: 280px; object-fit: cover; }
-        h1 { border-bottom: 2px solid #3eaf7c; padding-bottom: 10px; }
+        transform: translateY(-5px);          /* Lifts the card up */
+        }
+        
+        .card img { 
+        max-width: 100%; 
+        border-radius: 4px; 
+        height: 280px; 
+        object-fit: cover; 
+        }
+        
+        h1 { 
+        border-bottom: 2px solid #3eaf7c; 
+        padding-bottom: 10px; 
+        }
+        
         .controls {
-    margin-bottom: 30px;
-    display: flex;
-    gap: 10px;
-    background: #2a2a2a;
-    padding: 20px;
-    border-radius: 12px;
-}
+        display: flex;
+        flex-wrap: wrap; /* Helps it look good on mobile! */
+        gap: 10px;
+        margin-bottom: 40px;
+        padding: 20px;
+        background: #2a2a2a;
+        border-radius: 8px;
+        }
 
-input, select, button {
-    padding: 12px;
-    border-radius: 6px;
-    border: 1px solid #444;
-    background: #1a1a1a;
-    color: white;
-}
+        input, select, button {
+        padding: 12px;
+        border-radius: 6px;
+        border: 1px solid #444;
+        background: #1a1a1a;
+        color: white;
+        }
 
-button {
-    background: #3eaf7c;
-    cursor: pointer;
-    font-weight: bold;
-}
+        button {
+        background: #3eaf7c;
+        cursor: pointer;
+        font-weight: bold;
+        }
 
-button:hover { background: #4ecb8f; }
+        button:hover { 
+        background: #4ecb8f; 
+        }
     </style>
 </head>
 <body>
 
     <h1>📺 My Anime Collection</h1>
+    
+    <div class="controls">
+      <input type="text" id="anime-search" placeholder="Search anime...">
+      <select id="status-select">
+        <option value="Plan to Watch">Plan to Watch</option>
+        <option value="Watching">Watching</option>
+        <option value="Watched">Watched</option>
+        <option value="Unfinished">On Hold/Unfinished</option>
+      </select>
+      <button onclick="addAnime()">Add to List</button>
+    </div>
+    
     <div id="anime-grid" class="grid">Loading your list...</div>
 
     <script>

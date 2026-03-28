@@ -11,6 +11,22 @@ serve(async (req) => {
   if (req.method == 'OPTIONS') {
     return new Response('ok', {headers: corsHeaders })
   }
+
+  const supabase = createClient(
+    Deno.env.get('SUPABASE_URL') ?? '',
+    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+  )
+  // NEW: Check if the user wants to DELETE
+  if (req.method === 'DELETE') {
+    const { id } = await req.json()
+    const { error } = await supabase.from('anime').delete().eq('id', id)
+    
+    if (error) throw error
+    return new Response(JSON.stringify({ message: "Deleted!" }), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      status: 200
+    })
+  }
   try {
     // 1. Get the search term from your Test tab or Curl
     const { searchTerm } = await req.json()

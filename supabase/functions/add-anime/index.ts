@@ -1,7 +1,16 @@
 import { serve } from "https://deno.land/std@0.224.0/http/server.ts"
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.42.0"
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin' : '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+}
+
 serve(async (req) => {
+  // This handles the "handshake" the browser does before the real request
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', {headers: corsHeaders })
+  }
   try {
     // 1. Get the search term from your Test tab or Curl
     const { searchTerm } = await req.json()
@@ -37,7 +46,7 @@ serve(async (req) => {
 
     // 5. Send back a clean Success message
     return new Response(JSON.stringify({ message: "Success!", data }), {
-      headers: { "Content-Type": "application/json" },
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 200
     })
 

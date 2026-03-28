@@ -8,7 +8,7 @@ const corsHeaders = {
 
 serve(async (req) => {
   // This handles the "handshake" the browser does before the real request
-  if (req.method === 'OPTIONS') {
+  if (req.method == 'OPTIONS') {
     return new Response('ok', {headers: corsHeaders })
   }
   try {
